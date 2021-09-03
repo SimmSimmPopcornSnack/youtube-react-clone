@@ -1,7 +1,8 @@
+@import "../../styles/shared.scss";
 .ui.menu.top-menu {
     border: none;
     .logo {
-        width: 17rem; // rem=unit of the root html element, so relative size
+        width: $sidebar-left-width; // rem=unit of the root html element, so relative size
     }
     .nav-container {
         justify-content: space-between; /*maximize space between elements*/
