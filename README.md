@@ -5,5 +5,5 @@
 ## Used library / software 
 - React developed and maintained by Facebook, but a big community behind that, MIT license  
 - For taking snapshot for snapshot test, Enzyme developed and maintained by AirBnB, MIT license
-- For testing, Jest developed and maintained by Facebook, MIT license
   - Because enzyme adapter for React 17 is not officially released https://github.com/enzymejs/enzyme/issues/2429, I use the unofficial but good ver https://github.com/wojtekmaj/enzyme-adapter-react-17. You have to use "import Adapter from '@wojtekmaj/enzyme-adapter-react-17'"
+- For testing, Jest developed and maintained by Facebook, MIT license  
