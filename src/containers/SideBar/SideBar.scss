@@ -1,9 +1,9 @@
 @import '../../styles/shared.scss';
 .ui.menu.fixed.side-nav {
     background-color: #f5f5f5;
-    margin-top: $header-hav-height;
+    margin-top: $header-nav-height;
     overflow-y: auto;
-    padding-bottom: $header-hav-height;
+    padding-bottom: $header-nav-height;
 
     .sidebar-item:hover {
         background: #ebebeb;
