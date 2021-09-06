@@ -1,6 +1,6 @@
 import React from "react";
 import "./VideoInfoBox.scss";
-import { Image, Button } from "semantic-ui-react";
+import { Image, Button, Divider } from "semantic-ui-react";
 
 export class VideoInfoBox extends React.Component {
     constructor(props) {
@@ -26,20 +26,23 @@ export class VideoInfoBox extends React.Component {
                     <p>Paragraph 5</p>
                 </>;
 
-        return(
-            <div className="video-info-box">
-                <Image className="channel-image" src="http://via.placeholder.com/48x48" circular/>
-                <div className="video-info">
-                    <div className="channel-name">Channel Name</div>
-                    <div className="video-publication-date">Thu 24, 2017</div>
-                </div>
-                <Button color="youtube">91.5K Subscribe</Button>
-                <div className="video-description">
-                    <div className={descriptionTextClass}>
-                        {descriptionParagraph}
+        return (
+            <div>
+                <div className="video-info-box">
+                    <Image className="channel-image" src="http://via.placeholder.com/48x48" circular />
+                    <div className="video-info">
+                        <div className="channel-name">Channel Name</div>
+                        <div className="video-publication-date">Thu 24, 2017</div>
                     </div>
-                    <Button compact onClick={this.onToggleCollapseButtonClick}>{buttonTitle}</Button>
+                    <Button color="youtube">91.5K Subscribe</Button>
+                    <div className="video-description">
+                        <div className={descriptionTextClass}>
+                            {descriptionParagraph}
+                        </div>
+                        <Button compact onClick={this.onToggleCollapseButtonClick}>{buttonTitle}</Button>
+                    </div>
                 </div>
+                <Divider/>
             </div>
         );
     }
