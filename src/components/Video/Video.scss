@@ -16,7 +16,7 @@
         right: 0;
 
         .video-player {
-            min-height: 400px;
+            // min-height: 400px; // it makes metadata, video info box, and comments hidden in the video
             width: 100%;
             height: 100%;
         }
