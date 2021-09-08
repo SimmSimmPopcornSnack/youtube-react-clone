@@ -1,3 +1,21 @@
+export function buildMostPopularVideosRequest(amount = 12, loadDescription = false, nextPageToken) {
+    let fields = "nextPageToken,prevPageToken,items(contentDetails/duration,id,snippet(channelId,channelTitle,publishedAt,thumbnails/medium,title),statistics/viewCount,pageInfo(totalResults)";
+    // let fields = "nextPageToken,prevPageToken,items(contentDetails/duration,id,snippet(channelId,channelTitle,localized/title,publishedAt,thumbnails/medium,title),statistics/viewCount,pageInfo(totalResults)";
+    if(loadDescription) {
+        fields += ",items/snippet/description";
+    }
+    return buildApiRequest("GET",
+    "/youtube/v3/videos",
+    {
+        part: "snippet,statistics,contentDetails",
+        chart: "mostPopular",
+        maxResults: amount,
+        regionCode: "US",
+        pageToken: nextPageToken,
+        fields,
+    }, null);
+}
+
 /*
     Util - YouTube API boilerplate code
 */
@@ -7,7 +25,7 @@ export function buildApiRequest(requestMethod, path, params, properties) {
     let request;
     if(properties) {
         let resource = createResource(properties);
-        request = window.GamepadHapticActuator.client.request({
+        request = window.gapi.client.request({
             "body": resource,
             "method": requestMethod,
             "path": path,
@@ -46,7 +64,7 @@ function createResource(properties) {
         }
     }
     for(var prop in normalizedProps) {
-        // Leave properties that don't take values out of inserted resource
+        // Leave properties that don't have values out of inserted resource
         if(normalizedProps.hasOwnProperty(prop) && normalizedProps[prop]) {
             var propArray = prop.split(".");
             var ref = resource;
@@ -63,19 +81,3 @@ function createResource(properties) {
     }
 }
 
-export function buildMostPopularVideosRequest(amount = 12, loadDescription = false, nextPageToken) {
-    let fields = "nextPageToken,prevPageToken,items(contentDetails/duration,id,snippet(channelId,channelTitle,localized/title,publishedAt,thumbnails/medium,title),statistics/viewCount,pageInfo(totalResults)";
-    if(loadDescription) {
-        fields += ".items/snippet/description";
-    }
-    return buildApiRequest("GET",
-    "/youtube/v3/videos",
-    {
-        part: "snippet,statistics,contentDetails",
-        chart: "mostPopular",
-        maxResults: amount,
-        regionCode: "US",
-        pageToken: nextPageToken,
-        fields,
-    }, null);
-}

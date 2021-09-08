@@ -7,7 +7,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {youtubeLibraryLoaded} from "./store/actions/api";
 
-const API_KEY = `${process.env.REACT_APP_API_KEY_YOUTUBE}`;
+const API_KEY = process.env.REACT_APP_YT_API_KEY;
 
 class App extends Component {
   render() {
@@ -23,10 +23,13 @@ class App extends Component {
   componentDidMount() {
     this.loadYoutubeApi();
   }
+  componentDidUpdate(prevState) {
+    console.log("updated");
+  }
 
   loadYoutubeApi() {
     const script = document.createElement("script");
-    script.src = "http://apis.google.com/js/client.js";
+    script.src = "https://apis.google.com/js/client.js";
 
     script.onload = () => {
       window.gapi.load('client', () => {
