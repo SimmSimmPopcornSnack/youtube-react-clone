@@ -1,10 +1,3 @@
-export function createAction(type, payload = {}) {
-    return {
-        type,
-        ...payload,
-    };
-}
-
 export const REQUEST = "REQUEST";
 export const SUCCESS = "SUCCESS";
 export const FAILURE = "FAILURE";
@@ -18,4 +11,11 @@ export function createRequestTypes(base) {
         return acc;
     }, {});
 
+}
+
+export function createAction(type, payload = {}) {
+    return {
+        type,
+        ...payload,
+    };
 }

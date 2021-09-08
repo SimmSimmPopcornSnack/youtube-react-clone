@@ -7,7 +7,7 @@ export function NextUpVideo(props) {
     return (
         <>
             <div className="next-up-container">
-                <h4> Up next</h4>
+                <h4>Up next</h4>
                 <div className="up-next-toggle">
                     <span>Autoplay</span>
                     <Checkbox toggle defaultChecked/>

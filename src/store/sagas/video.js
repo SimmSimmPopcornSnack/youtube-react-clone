@@ -4,6 +4,11 @@ import * as videoActions from "../actions/video";
 import { REQUEST } from "../actions";
 import { fetchEntity } from "./index";
 
+export function* fetchMostPopularVideos(amount, loadDescription, nextPageToken) {
+    const request = api.buildMostPopularVideosRequest.bind(null, amount, loadDescription, nextPageToken);
+    yield fetchEntity(request, videoActions.mostPopular);
+}
+
 export function* watchMostPopularVideos() {
     while(true) {
         const {amount, loadDescription, nextPageToken} = yield take(videoActions.MOST_POPULAR[REQUEST]);
@@ -11,7 +16,3 @@ export function* watchMostPopularVideos() {
     }
 }
 
-export function* fetchMostPopularVideos(amount, loadDescription, nextPageToken) {
-    const request = api.buildMostPopularVideosRequest.bind(null, amount, loadDescription, nextPageToken);
-    yield fetchEntity(request, videoActions.mostPopular);
-}
