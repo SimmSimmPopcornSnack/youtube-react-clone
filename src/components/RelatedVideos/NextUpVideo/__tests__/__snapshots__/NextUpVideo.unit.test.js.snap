@@ -6,7 +6,7 @@ exports[`NextUpVideo renders 1`] = `
     className="next-up-container"
   >
     <h4>
-       Up next
+      Up next
     </h4>
     <div
       className="up-next-toggle"
