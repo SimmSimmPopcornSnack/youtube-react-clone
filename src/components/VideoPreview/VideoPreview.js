@@ -42,7 +42,7 @@ export class VideoPreview extends React.Component {
         const publicationDate = new Date(video.snippet.publishedAt);
         const viewCount = video.statistics ? video.statistics.viewCount : null;
         if(viewCount) {
-            const viewCountShort = getMostPopularVideos(video.statistics.viewCount);
+            const viewCountShort = getShortNumberString(video.statistics.viewCount);
             return `${viewCountShort} views • ${timeAgo.format(publicationDate)}`;
         } else {
             return `${timeAgo.format(publicationDate)}`;
