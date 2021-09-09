@@ -1,3 +1,4 @@
+import { VideoInfoBox } from "../../components/VideoInfoBox/VideoInfoBox";
 import { createAction, createRequestTypes, REQUEST, SUCCESS, FAILURE } from "./index";
 
 export const MOST_POPULAR = createRequestTypes("MOST_POPULAR");
