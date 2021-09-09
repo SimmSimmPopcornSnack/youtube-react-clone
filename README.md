@@ -13,3 +13,4 @@
   - Because enzyme adapter for React 17 is not officially released https://github.com/enzymejs/enzyme/issues/2429, I use the unofficial but good ver https://github.com/wojtekmaj/enzyme-adapter-react-17. You have to use "import Adapter from '@wojtekmaj/enzyme-adapter-react-17'"
 - For testing, Jest developed and maintained by Facebook, MIT license  
 - Redux from Part 18 (and Reselect in part 21), to hold state variables. It was originally developed by Facebook developers and now is maintained by a community. Open source and MIT license.  
+- javascript-time-ago from part 27, to developed and maintained by individual and MIT license https://github.com/catamphetamine/javascript-time-ago and https://gitlab.com/catamphetamine. Interesting to see that GirHub suddenly banned the Russian developer's account https://medium.com/@catamphetamine/how-github-blocked-me-and-all-my-libraries-c32c61f061d3.  
