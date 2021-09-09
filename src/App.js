@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Home } from "./containers/Home/Home";
+import Home from "./containers/Home/Home";
 import { AppLayout } from "./components/AppLayout/AppLayout";
 import { Route, Switch, withRouter } from "react-router-dom";
-import { Watch } from "./containers/Watch/Watch";
+import Watch from "./containers/Watch/Watch";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import {youtubeLibraryLoaded} from "./store/actions/api";

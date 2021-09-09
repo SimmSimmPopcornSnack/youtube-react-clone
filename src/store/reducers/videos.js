@@ -1,6 +1,8 @@
 import { categories, MOST_POPULAR, MOST_POPULAR_BY_CATEGORY, VIDEO_CATEGORIES } from "../actions/video";
 import { SUCCESS } from "../actions";
 import { createSelector } from "reselect";
+import { WATCH_DETAILS } from "../actions/watch";
+import { VIDEO_LIST_RESPONSE } from "../api/youtube-api-response-types";
 
 export const initialState = {
     byId: {},
@@ -15,6 +17,8 @@ export default function videos(state = initialState, action) {
             return reduceFetchVideoCategories(action.response, state);
         case MOST_POPULAR_BY_CATEGORY[SUCCESS]:
             return reduceFetchMostPopularVideosByCategory(action.response, action.categories, state);
+        case WATCH_DETAILS[SUCCESS]:
+            return reduceWatchDetails(action.response, state);
         default:
             return state;
     }
@@ -98,6 +102,21 @@ function groupVideoByIdAndCategory(response) {
     return {byId, byCategory};
 }
 
+function reduceWatchDetails(responses, prevState) {
+    const videoDetailResponse = responses.find(r => r.result.kind === VIDEO_LIST_RESPONSE);
+    // we know that items will only have one element
+    // because we explicitly asked for a video with one specific id
+    const video = videoDetailResponse.result.items[0];
+
+    return {
+        ...prevState,
+        byId: {
+            ...prevState.byId,
+            ...{[video.id]: video},
+        },
+    };
+}
+
 /*
 *   Selectors
 * */
@@ -143,6 +162,6 @@ export const videoCategoriesLoaded = createSelector(
 export const videosByCategoryLoaded = createSelector(
     state => state.videos.byCategory,
     (videosByCategory) => {
-        return Object.keys(videosByCategory || {}).length();
+        return Object.keys(videosByCategory || {}).length;
     }
 );

@@ -9,7 +9,7 @@ import { SideBar } from "../SideBar/SideBar";
 import HomeContent from "./HomeContent/HomeContent";
 import { getVideosCategoryIds, videoCategoriesLoaded, videosByCategoryLoaded } from "../../store/reducers/videos";
 
-export class Home extends React.Component {
+class Home extends React.Component {
     constructor(props){
         super(props);
         this.state = {
