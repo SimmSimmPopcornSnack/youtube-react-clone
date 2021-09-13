@@ -6,3 +6,11 @@ export const details = {
     success: (response) => createAction(WATCH_DETAILS[SUCCESS], {response}),
     failure: (response) => createAction(WATCH_DETAILS[FAILURE], {response}),
 };
+export const VIDEO_DETAILS = createRequestTypes('VIDEO_DETAILS');
+export const vidoDetails = {
+    request: () => {
+        throw Error("not implemented");
+    },
+    success: (response) => createAction(VIDEO_DETAILS[SUCCESS], {response}),
+    failure: (response) => createAction(VIDEO_DETAILS[FAILURE]),
+};
