@@ -1,11 +1,5 @@
 import React from "react";
-import "./Watch.scss";
-import { Video } from "../../components/Video/Video";
-import { RelatedVideos } from "../../components/RelatedVideos/RelatedVideos";
-import { VideoMetadata } from "../../components/VideoMetadata/VideoMetadata";
-import { VideoInfoBox } from "../../components/VideoInfoBox/VideoInfoBox";
-import { Comments } from "../Comments/Comments";
-
+import WatchContent from "./WatchContent/WatchContent";
 import { bindActionCreators } from "redux";
 import * as watchActions from "../../store/actions/watch";
 import { withRouter } from "react-router";
@@ -23,24 +17,15 @@ function mapDispatchToProps(dispatch){
     return bindActionCreators({fetchWatchDetails}, dispatch);
 }
 
-// export class Watch extends React.Component {
 export class Watch extends React.Component {
     getVideoId() {
         const searchParams = new URLSearchParams(this.props.location.search);
         return searchParams.get('v');
     }
     render() {
-        return (
-            <div className="watch-grid">
-                <Video className="video" id="-7fuHEEmEjs"/>
-                <VideoMetadata className="metadata" viewCount={1000}/>
-                <VideoInfoBox className="video-info-box"/>
-                <Comments className="comments"/>
-                <RelatedVideos/>
-            </div>
-        );
+        const videoId = this.getVideoId();
+        return (<WatchContent videoId={videoId}/>);
     }
-
     componentDidMount() {
         if(this.props.youtubeLibraryLoaded) {
             this.fetchWatchContent();
