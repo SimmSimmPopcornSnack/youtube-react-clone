@@ -165,3 +165,7 @@ export const videosByCategoryLoaded = createSelector(
         return Object.keys(videosByCategory || {}).length;
     }
 );
+
+export const getVideoById = (state, videoId) => {
+    return state.video.byId[videoId];
+}

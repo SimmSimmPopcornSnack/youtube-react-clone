@@ -1,6 +1,8 @@
 import React from "react";
 import "./VideoInfoBox.scss";
 import { Image, Button, Divider } from "semantic-ui-react";
+import ReactLinkify from "react-linkify";
+import { getPublishedAtDateString } from "../../services/date/date-format";
 
 export class VideoInfoBox extends React.Component {
     constructor(props) {
@@ -10,21 +12,34 @@ export class VideoInfoBox extends React.Component {
         }
     }
 
-    render() {
-        let descriptionTextClass = 'collapsed';
-        let buttonTitle = "Show More";
+    getDescriptionParagraphs() {
+        const videoDescription = this.props.video.snippet ? this.props.video.snippet.description : null;
+        if(!videoDescription) {
+            return null;
+        }
+        return videoDescription.split("\n").map((paragraph, index) => <p key={index}><ReactLinkify>{paragraph}</ReactLinkify></p>);
+    }
+
+    getConfig() {
+        let descriptionTextClass = "collapsed";
+        let buttonTitle = "Show Mode";
         if(!this.state.collapsed) {
-            descriptionTextClass = 'expanded';
+            descriptionTextClass = "expanded";
             buttonTitle = "Show Less";
         }
-        const descriptionParagraph = 
-                <>
-                    <p>Paragraph 1</p>
-                    <p>Paragraph 2</p>
-                    <p>Paragraph 3</p>
-                    <p>Paragraph 4</p>
-                    <p>Paragraph 5</p>
-                </>;
+        return {
+            descriptionTextClass,
+            buttonTitle
+        };
+    }
+    render() {
+        if(!this.props.video) {
+            return<div/>;
+        }
+
+        const descriptionParagraph = this.getDescriptionParagraphs();
+        const {descriptionTextClass, buttonTitle} = this.getConfig();
+        const publishedAtString = getPublishedAtDateString(this.props.video.snippet.publishedAt);
 
         return (
             <div>
@@ -32,7 +47,7 @@ export class VideoInfoBox extends React.Component {
                     <Image className="channel-image" src="http://via.placeholder.com/48x48" circular />
                     <div className="video-info">
                         <div className="channel-name">Channel Name</div>
-                        <div className="video-publication-date">Thu 24, 2017</div>
+                        <div className="video-publication-date">{publishedAtString}</div>
                     </div>
                     <Button color="youtube">91.5K Subscribe</Button>
                     <div className="video-description">
