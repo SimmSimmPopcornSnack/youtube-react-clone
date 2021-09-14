@@ -100,7 +100,6 @@ export function buildVideoDetailRequest(videoId) {
         fields: "kind,items(contentDetails/duration,id,snippet(channelId,channelTitle,description,publishedAt,thumbnails/medium,title),statistics)"
     }, null);
 }
-
 export function buildRelatedVideosRequest(videoId, amountRelatedVideo = 12) {
     return buildApiRequest("GET",
     "/youtube/v2/search",

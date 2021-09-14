@@ -3,6 +3,7 @@ import { SUCCESS } from "../actions";
 import { createSelector } from "reselect";
 import { WATCH_DETAILS } from "../actions/watch";
 import { VIDEO_LIST_RESPONSE, SEARCH_LIST_RESPONSE } from "../api/youtube-api-response-types";
+import { VIDEO_LIST_RESPONSE } from "../api/youtube-api-response-types";
 
 export const initialState = {
     byId: {},
