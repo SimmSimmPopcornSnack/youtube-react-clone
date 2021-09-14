@@ -67,13 +67,6 @@ class Home extends React.Component {
         }
     }
     
-    componentDidUpdate(prevProps) {
-        console.log("updated");
-        if(this.props.youtubeLibraryLoaded !== prevProps.youtubeLibraryLoaded) {
-            this.fetchCategoriesAndMostPopularVideos();
-        }
-    }
-
     fetchCategoriesAndMostPopularVideos() {
         this.props.fetchMostPopularVideos();
         this.props.fetchVideoCategories();

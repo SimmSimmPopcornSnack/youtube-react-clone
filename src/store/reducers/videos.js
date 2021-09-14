@@ -1,7 +1,7 @@
 import { categories, MOST_POPULAR, MOST_POPULAR_BY_CATEGORY, VIDEO_CATEGORIES } from "../actions/video";
 import { SUCCESS } from "../actions";
 import { createSelector } from "reselect";
-import { WATCH_DETAILS } from "../actions/watch";
+import { VIDEO_DETAILS, WATCH_DETAILS } from "../actions/watch";
 import { VIDEO_LIST_RESPONSE, SEARCH_LIST_RESPONSE } from "../api/youtube-api-response-types";
 
 export const initialState = {
@@ -19,6 +19,8 @@ export default function videos(state = initialState, action) {
             return reduceFetchMostPopularVideosByCategory(action.response, action.categories, state);
         case WATCH_DETAILS[SUCCESS]:
             return reduceWatchDetails(action.response, state);
+        case VIDEO_DETAILS[SUCCESS]:
+            return reducerVideoDetails(action.responses, state);
         default:
             return state;
     }
@@ -134,6 +136,27 @@ function reduceRelatedVideosRequest(responses) {
     };
 }
 
+function reducerVideoDetails(responses, prevState) {
+    const videoResponses = responses.filter(response => response.result.kind === VIDEO_LIST_RESPONSE);
+    const parsedVideos = videoResponses.reduce((videoMap, response) => {
+        // we're explicitly asking for a video with a particular id
+        // so the response set must either contain 0 items (if a video with the id does not exist)
+        // or at most one item (i.e. the video we've been asking for)
+        const video = response.result.items ? response.result.items[0] : null;
+        if(!video) {
+            return videoMap;
+        }
+        videoMap[video.id] = video;
+        return videoMap;
+    }, {});
+
+    return {
+        ...prevState,
+        byId: {...prevState.byId, ...parsedVideos},
+    };
+}
+
+
 /*
 *   Selectors
 * */
@@ -186,3 +209,19 @@ export const videosByCategoryLoaded = createSelector(
 export const getVideoById = (state, videoId) => {
     return state.video.byId[videoId];
 }
+
+const getRelatedVideoIds = (state, videoId) => {
+    const related = state.videos.related[videoId];
+    return related ? related.items : [];
+};
+
+export const getRelatedVideos = createSelector(
+    getRelatedVideoIds,
+    state => state.video.byId,
+    (relatedVideoIds, videos) => {
+        if(relatedVideoIds) {
+            // filter kicks out null values we might have
+            return relatedVideoIds.map(videoId => videos[videoId]).filter(video => video);
+        }
+        return [];
+    });

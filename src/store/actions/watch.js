@@ -7,7 +7,7 @@ export const details = {
     failure: (response) => createAction(WATCH_DETAILS[FAILURE], {response}),
 };
 export const VIDEO_DETAILS = createRequestTypes('VIDEO_DETAILS');
-export const vidoDetails = {
+export const videoDetails = {
     request: () => {
         throw Error("not implemented");
     },
