@@ -5,11 +5,14 @@ import * as watchActions from "../../store/actions/watch";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
+import { getSearchParam } from "../../services/url";
+import { getChannelId } from "../../store/reducers/videos";
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
     return {
         youtubeLibraryLoaded: getYoutubeLibraryLoaded(state),
-    };
+        channelId: getChannelId(state, props.location, "v")
+    }
 }
 
 function mapDispatchToProps(dispatch){
@@ -19,13 +22,13 @@ function mapDispatchToProps(dispatch){
 
 export class Watch extends React.Component {
     getVideoId() {
-        const searchParams = new URLSearchParams(this.props.location.search);
-        return searchParams.get('v');
+        return getSearchParam(this.props.location, "v")
     }
     render() {
         const videoId = this.getVideoId();
-        return (<WatchContent videoId={videoId}/>);
+        return (<WatchContent videoId={videoId} channelId={this.props.channelId}/>);
     }
+    
     componentDidMount() {
         if(this.props.youtubeLibraryLoaded) {
             this.fetchWatchContent();

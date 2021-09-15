@@ -111,3 +111,13 @@ export function buildRelatedVideosRequest(videoId, amountRelatedVideo = 12) {
         relatedToVideoId: videoId,
     }, null);
 }
+
+export function buildChannelRequest(channelId) {
+    return buildApiRequest("GET",
+    "youtube/v3/channels",
+    {
+        part: "snippet,statistics",
+        id: channelId,
+        fields: "kind,items(id,snippet(description,thumbnails/medium,title),statistics/subscriberCount)"
+    }, null);
+}
