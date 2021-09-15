@@ -2,7 +2,7 @@ import {fork, take, all, put, call} from "redux-saga/effects";
 import * as watchAction from "../actions/watch";
 import { REQUEST } from "../actions";
 import { buildChannelRequest, buildRelatedVideosRequest, buildVideoDetailRequest } from "../api/youtube-api";
-import { SEARCH_LIST_RESPONSE } from "../api/youtube-api-response-types";
+import { SEARCH_LIST_RESPONSE, VIDEO_LIST_RESPONSE } from "../api/youtube-api-response-types";
 import { channel } from "@redux-saga/core";
 
 export function* fetchWatchDetails(videoId, channelId) {
@@ -18,13 +18,13 @@ export function* fetchWatchDetails(videoId, channelId) {
     try {
         const responses = yield all(requests.map(fn => call(fn)));
         yield put(watchAction.details.success(requests));
-        yield call(fetchVideoDetails, responses);
+        yield call(fetchVideoDetails, responses, channelId === null);
     } catch (error) {
         yield put(watchAction.details.failure(error));
     }
 }
 
-function* fetchVideoDetails(responses) {
+function* fetchVideoDetails(responses, shouldFetchChannelInfo) {
     const searchListResponse = responses.find(response => response.result.kind === SEARCH_LIST_RESPONSE);
     const relatedVideoIds = searchListResponse.result.items.map(relatedVideo => relatedVideo.id.videoId);
 
@@ -32,6 +32,18 @@ function* fetchVideoDetails(responses) {
         return buildVideoDetailRequest.bind(null, relatedVideoId);
     });
 
+    if(shouldFetchChannelInfo) {
+        // we have to extract the video's channel id from the video details response
+        // so we can load additional channel information.
+        // this is only needee, when a user directly accesses .../watch?v=1234
+        // because then we only know the video id
+        const videoDetailResponse = responses.find(response => response.result.kind === VIDEO_LIST_RESPONSE);
+        const videos = videoDetailResponse.reuslt.items;
+        if(videos && videos.length) {
+            requests.push(buildChannelRequest.bind(null, videos[0].snippet.channel));
+        }
+    }
+    
     try {
         const responses = yield all(requests.map(fn => call(fn)));
         yield put(watchAction.videoDetails.success(responses));
