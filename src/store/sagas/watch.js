@@ -1,7 +1,13 @@
 import {fork, take, all, put, call} from "redux-saga/effects";
 import * as watchAction from "../actions/watch";
 import { REQUEST } from "../actions";
-import { buildChannelRequest, buildRelatedVideosRequest, buildVideoDetailRequest } from "../api/youtube-api";
+import {
+    buildChannelRequest,
+    buildCommentThreadRequest,
+    buildRelatedVideosRequest, 
+    buildVideoDetailRequest,
+    builldCommentThreadRequest
+} from "../api/youtube-api";
 import { SEARCH_LIST_RESPONSE, VIDEO_LIST_RESPONSE } from "../api/youtube-api-response-types";
 import { channel } from "@redux-saga/core";
 
@@ -9,6 +15,7 @@ export function* fetchWatchDetails(videoId, channelId) {
     let requests = [
         buildVideoDetailRequest.bind(null, videoId),
         buildRelatedVideosRequest(null, videoId),
+        buildCommentThreadRequest(null, videoId)
     ];
 
     if(!channelId) {
@@ -17,7 +24,7 @@ export function* fetchWatchDetails(videoId, channelId) {
     
     try {
         const responses = yield all(requests.map(fn => call(fn)));
-        yield put(watchAction.details.success(requests));
+        yield put(watchAction.details.success(requests, videoId));
         yield call(fetchVideoDetails, responses, channelId === null);
     } catch (error) {
         yield put(watchAction.details.failure(error));
@@ -43,7 +50,7 @@ function* fetchVideoDetails(responses, shouldFetchChannelInfo) {
             requests.push(buildChannelRequest.bind(null, videos[0].snippet.channel));
         }
     }
-    
+
     try {
         const responses = yield all(requests.map(fn => call(fn)));
         yield put(watchAction.videoDetails.success(responses));
