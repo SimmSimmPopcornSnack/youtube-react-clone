@@ -1,15 +1,13 @@
 import {fork, take, all, put, call} from "redux-saga/effects";
 import * as watchAction from "../actions/watch";
-import { REQUEST } from "../actions";
 import {
     buildChannelRequest,
     buildCommentThreadRequest,
     buildRelatedVideosRequest, 
-    buildVideoDetailRequest,
-    builldCommentThreadRequest
+    buildVideoDetailRequest
 } from "../api/youtube-api";
+import { REQUEST } from "../actions";
 import { SEARCH_LIST_RESPONSE, VIDEO_LIST_RESPONSE } from "../api/youtube-api-response-types";
-import { channel } from "@redux-saga/core";
 
 export function* fetchWatchDetails(videoId, channelId) {
     let requests = [

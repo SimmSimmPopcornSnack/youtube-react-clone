@@ -2,7 +2,7 @@ import apiReducer from "./api";
 import videosReducer from "./videos";
 import { combineReducers } from "redux";
 import channelsReducer from "./channels";
-import commentsReducer from "./comment";
+import commentsReducer from "./comments";
 
 export default combineReducers({
     api: apiReducer,

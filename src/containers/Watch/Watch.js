@@ -7,18 +7,8 @@ import { connect } from "react-redux";
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
 import { getSearchParam } from "../../services/url";
 import { getChannelId } from "../../store/reducers/videos";
-
-function mapStateToProps(state, props) {
-    return {
-        youtubeLibraryLoaded: getYoutubeLibraryLoaded(state),
-        channelId: getChannelId(state, props.location, "v")
-    }
-}
-
-function mapDispatchToProps(dispatch){
-    const fetchWatchDetails = watchActions.details.request;
-    return bindActionCreators({fetchWatchDetails}, dispatch);
-}
+import * as commentActions from "../../store/actions/comment";
+import { getCommentNextPageToken } from "../../store/reducers/comments";
 
 export class Watch extends React.Component {
     getVideoId() {
@@ -26,7 +16,11 @@ export class Watch extends React.Component {
     }
     render() {
         const videoId = this.getVideoId();
-        return (<WatchContent videoId={videoId} channelId={this.props.channelId}/>);
+        return (<WatchContent videoId={videoId}
+                              channelId={this.props.channelId}
+                              bottonReachedCallback={this.fetchMoreComments}
+                              nextPageToken={this.props.nextPageToken}
+        />);
     }
     
     componentDidMount() {
@@ -48,6 +42,20 @@ export class Watch extends React.Component {
         }
         this.props.fetchWatchDetails(videoId, this.props.channelId);
     }
+}
+
+function mapStateToProps(state, props) {
+    return {
+        youtubeLibraryLoaded: getYoutubeLibraryLoaded(state),
+        channelId: getChannelId(state, props.location, "v"),
+        nextPageToken: getCommentNextPageToken(state, props.location),
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    const fetchWatchDetails = watchActions.details.request;
+    const fetchCommentThread = commentActions.thread.request;
+    return bindActionCreators({fetchWatchDetails, fetchCommentThread}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Watch));

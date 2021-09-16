@@ -5,9 +5,11 @@ import { VideoInfoBox } from "../../../components/VideoInfoBox/VideoInfoBox";
 import { Comments } from "../../Comments/Comments";
 import { RelatedVideos } from "../../../components/RelatedVideos/RelatedVideos";
 import "./WatchContent.scss";
-import { getRelatedVideos, getVideoById } from "../../../store/reducers/videos";
+import { getAmountComments, getRelatedVideos, getVideoById } from "../../../store/reducers/videos";
 import { connect } from "react-redux";
 import { getChannel } from "../../../store/reducers/channels";
+import {getCommentsForVideo} from "../../../store/reducers/comments";
+import {InfiniteScroll} from "../../../components/InfiniteScroll/InfiniteScroll";
 
 class WatchContent extends React.Component {
     render() {
@@ -15,14 +17,19 @@ class WatchContent extends React.Component {
             return<div/>;
         }
         return (
-            <div className="watch-grid">
-                <Video className="video" id={this.props.videoId}/>
-                <VideoMetadata video={this.props.video}/>
-                <VideoInfoBox className="video-info-box" video={this.props.video} channel={this.props.channel}/>
-                <Comments className="comments" amountComments={112499}/>
-                <RelatedVideos className="related-video" videos={this.props.relatedVideos}/>
-            </div>
+            <InfiniteScroll bottomReachedCallback={this.props.bottomReachedCallback} showLoader={this.shouldShowLoader()}>
+                <div className="watch-grid">
+                    <Video className="video" id={this.props.videoId} />
+                    <VideoMetadata video={this.props.video} />
+                    <VideoInfoBox className="video-info-box" video={this.props.video} channel={this.props.channel} />
+                    <Comments className="comments" comments={this.props.comments} amountComments={this.props.amountComments} />
+                    <RelatedVideos className="related-video" videos={this.props.relatedVideos} />
+                </div>
+            </InfiniteScroll>
         );
+    }
+    shouldShowLoader() {
+        return !!this.props.nextPageToken;
     }
 }
 function mapStateToProps(state, props){
@@ -30,6 +37,8 @@ function mapStateToProps(state, props){
         relatedVideos: getRelatedVideos(state, props.videoId),
         video: getVideoById(state, props.videoId),
         channel: getChannel(state, props.channelId),
+        comments: getCommentsForVideo(state, props.videoId),
+        amountComments: getAmountComments(state, props.videoId)
     }
 }
 export default connect(mapStateToProps, null)(WatchContent);
