@@ -1,10 +1,13 @@
 import { SEARCH_FOR_VIDEOS } from "../actions/search";
-import { SUCCESS } from "../actions";
+import { REQUEST, SUCCESS } from "../actions";
 
 export default function(state = {}, action) {
     switch(action.type) {
         case SEARCH_FOR_VIDEOS[SUCCESS]:
             return reduceSearchForVideos(action.response, action.searchQuery);
+        case SEARCH_FOR_VIDEOS[REQUEST]:
+            // delete the previsous search element if we don't load more search results for the revious search query
+            return action.nextPageToken ? state : {};
         default:
             return state;
     }
