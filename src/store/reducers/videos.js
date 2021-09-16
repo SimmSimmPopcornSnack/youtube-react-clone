@@ -1,6 +1,6 @@
-import { categories, MOST_POPULAR, MOST_POPULAR_BY_CATEGORY, VIDEO_CATEGORIES } from "../actions/video";
+import { categories, mostPopular, MOST_POPULAR, MOST_POPULAR_BY_CATEGORY, VIDEO_CATEGORIES } from "../actions/video";
 import { SUCCESS } from "../actions";
-import { createSelector } from "reselect";
+import { createSelector, createStructuredSelector } from "reselect";
 import { VIDEO_DETAILS, WATCH_DETAILS } from "../actions/watch";
 import { VIDEO_LIST_RESPONSE, SEARCH_LIST_RESPONSE } from "../api/youtube-api-response-types";
 <<<<<<< HEAD
@@ -248,3 +248,19 @@ export const getAmountComments = createSelector(
         }
         return 0;
     });
+
+const getMostPopular = (state) => state.video.mostPopular;
+export const getMostPopularVideosNextPageToken = createSelector(
+    getMostPopular,
+    (mostPopular) => {
+        return mostPopular.nextPageToken;
+    }
+);
+
+export const allMostPopularVideosLoaded = createSelector(
+    [getMostPopular],
+    (mostPopular) => {
+        const amountFetchedItems = mostPopular.items ? mostPopular.items.length : 0;
+        return amountFetchedItems === mostPopular.totalResults;
+    }
+);
