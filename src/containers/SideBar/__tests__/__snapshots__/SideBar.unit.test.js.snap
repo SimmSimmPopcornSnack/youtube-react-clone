@@ -12,10 +12,12 @@ exports[`renders SideBar 1`] = `
     highlight={true}
     icon="home"
     label="Home"
+    path="/"
   />
   <SideBarItem
     icon="fire"
     label="Trending"
+    path="/feed/trending"
   />
   <SideBarItem
     icon="spy"

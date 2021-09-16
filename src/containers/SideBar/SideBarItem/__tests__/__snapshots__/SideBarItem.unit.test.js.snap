@@ -1,82 +1,114 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SideBarItem renders empty SideBarItem 1`] = `
-<MenuItem
-  className="sidebar-item "
+<Link
+  to={
+    Object {
+      "pathname": undefined,
+    }
+  }
 >
-  <div
-    className="sidebar-item-alignment-container"
+  <MenuItem
+    className="sidebar-item "
   >
-    <span>
-      <Icon
-        as="i"
-        size="large"
-      />
-    </span>
-    <span />
-  </div>
-</MenuItem>
+    <div
+      className="sidebar-item-alignment-container"
+    >
+      <span>
+        <Icon
+          as="i"
+          size="large"
+        />
+      </span>
+      <span />
+    </div>
+  </MenuItem>
+</Link>
 `;
 
 exports[`SideBarItem renders highlighted SideBarItem that navigates to /feed/trending 1`] = `
-<MenuItem
-  className="sidebar-item highlight-item"
+<Link
+  to={
+    Object {
+      "pathname": undefined,
+    }
+  }
 >
-  <div
-    className="sidebar-item-alignment-container"
+  <MenuItem
+    className="sidebar-item highlight-item"
   >
-    <span>
-      <Icon
-        as="i"
-        name="fire"
-        size="large"
-      />
-    </span>
-    <span>
-      Trending
-    </span>
-  </div>
-</MenuItem>
+    <div
+      className="sidebar-item-alignment-container"
+    >
+      <span>
+        <Icon
+          as="i"
+          name="fire"
+          size="large"
+        />
+      </span>
+      <span>
+        Trending
+      </span>
+    </div>
+  </MenuItem>
+</Link>
 `;
 
 exports[`SideBarItem renders highlighted SideBarItem with no navigaiton 1`] = `
-<MenuItem
-  className="sidebar-item highlight-item"
+<Link
+  to={
+    Object {
+      "pathname": undefined,
+    }
+  }
 >
-  <div
-    className="sidebar-item-alignment-container"
+  <MenuItem
+    className="sidebar-item highlight-item"
   >
-    <span>
-      <Icon
-        as="i"
-        name="fire"
-        size="large"
-      />
-    </span>
-    <span>
-      Trending
-    </span>
-  </div>
-</MenuItem>
+    <div
+      className="sidebar-item-alignment-container"
+    >
+      <span>
+        <Icon
+          as="i"
+          name="fire"
+          size="large"
+        />
+      </span>
+      <span>
+        Trending
+      </span>
+    </div>
+  </MenuItem>
+</Link>
 `;
 
 exports[`SideBarItem renders non-highlighted SideBarItem that navigates to /feed/trending 1`] = `
-<MenuItem
-  className="sidebar-item "
+<Link
+  to={
+    Object {
+      "pathname": undefined,
+    }
+  }
 >
-  <div
-    className="sidebar-item-alignment-container"
+  <MenuItem
+    className="sidebar-item "
   >
-    <span>
-      <Icon
-        as="i"
-        name="fire"
-        size="large"
-      />
-    </span>
-    <span>
-      Trending
-    </span>
-  </div>
-</MenuItem>
+    <div
+      className="sidebar-item-alignment-container"
+    >
+      <span>
+        <Icon
+          as="i"
+          name="fire"
+          size="large"
+        />
+      </span>
+      <span>
+        Trending
+      </span>
+    </div>
+  </MenuItem>
+</Link>
 `;
