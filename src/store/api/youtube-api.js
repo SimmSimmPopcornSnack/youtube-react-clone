@@ -131,3 +131,14 @@ export function buildCommentThreadRequest(videoId, nextPageToken) {
         videoId,
     }, null);
 }
+export function buildSearchRequest(query, nextPageToken, amount = 12, ) {
+    return buildApiRequest("GET",
+    "/youtube/v3/search",
+    {
+        part: "id,snippet",
+        q: query,
+        type: "video",
+        pageToken: nextPageToken,
+        maxResults: amount,
+    }, null);
+}
