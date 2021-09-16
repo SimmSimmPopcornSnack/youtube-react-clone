@@ -1,5 +1,5 @@
 import React from "react";
-import "./Trending.scss";
+import { VideoList } from "../../components/VideoList/VideoList";
 import { VideoPreview } from "../../components/VideoPreview/VideoPreview";
 import { SideBar } from "../SideBar/SideBar";
 import { Sidebar } from "semantic-ui-react";
@@ -18,27 +18,14 @@ class Trending extends React.Component {
     render () {
         const previews = this.getVideoPreviews();
         const loaderActive = this.shouldShowLoader(); 
-        return (
-            <>
-                <Sidebar/>
-                <div className="trending">
-                    <InfiniteScroll bottomReachedCallback={this.fetchMoreVideos} showLoader={loaderActive}>
-                        {previews}
-                    </InfiniteScroll>
-                </div>
-            </>
-        );
+        return (<VideoList
+            bottomReachedCallback={this.fetchMoreVideos}
+            showLoader={loaderActive}
+            videos={this.props.videos}/>);
     }
 
     shouldShowLoader() {
         return !this.props.allMostPopularVideosLoaded;
-    }
-
-    getVideoPreviews() {
-        return this.props.video.map(video => (
-            <VideoPreview horizontal={true} expended={true} video={video} key={video.id} pathname={"/watch"}
-                          search={`?v=` + video.id}/>)
-        );
     }
 
     componentDidMount() {
@@ -56,7 +43,7 @@ class Trending extends React.Component {
         }
     }
     fetchMoreVideos = () => {
-        const {nestPageToken} = this.props;
+        const {nextPageToken} = this.props;
         if(this.props.youtubeLibraryLoaded && nextPageToken) {
             this.props.fetchMostPopularVideos(12, true, nextPageToken);
         }
