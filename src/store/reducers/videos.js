@@ -3,11 +3,7 @@ import { SUCCESS } from "../actions";
 import { createSelector, createStructuredSelector } from "reselect";
 import { VIDEO_DETAILS, WATCH_DETAILS } from "../actions/watch";
 import { VIDEO_LIST_RESPONSE, SEARCH_LIST_RESPONSE } from "../api/youtube-api-response-types";
-<<<<<<< HEAD
-=======
-import { STATEMENT_OR_BLOCK_KEYS } from "@babel/types";
 import { getSearchParam } from "../../services/url";
->>>>>>> f6521c0... Done part 37, fetching channel information when jumping from home to watch screens
 
 export const initialState = {
     byId: {},
