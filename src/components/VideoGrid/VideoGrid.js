@@ -5,7 +5,7 @@ import { Divider } from "semantic-ui-react";
 import { VideoPreview } from "../VideoPreview/VideoPreview";
 
 export function VideoGrid(props) {
-    if(!props.video || !props.video.title) {
+    if(!props.videos || !props.videos.length) {
         return <div/>;
     }
     const gridItems = props.videos.map(video => {

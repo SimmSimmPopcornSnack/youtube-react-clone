@@ -13,4 +13,7 @@ export default function (state = initialState, action) {
             return state;
     }
 }
-export const getYoutubeLibraryLoaded = (state) => state.api.libraryLoaded;
+// export const getYoutubeLibraryLoaded = (state) => state.api.libraryLoaded;
+export const getYoutubeLibraryLoaded = (state) => {
+    return state.api.libraryLoaded;
+}

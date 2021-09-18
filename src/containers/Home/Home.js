@@ -3,11 +3,10 @@ import {connect} from "react-redux";
 import * as videoActions from "../../store/actions/video";
 import {bindActionCreators} from "redux";
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
-import { getVideoCategoryIds } from "../../store/reducers/videos";
 import "./Home.scss";
 import { SideBar } from "../SideBar/SideBar";
 import HomeContent from "./HomeContent/HomeContent";
-import { getVideosCategoryIds, videoCategoriesLoaded, videosByCategoryLoaded } from "../../store/reducers/videos";
+import { getVideoCategoryIds, videoCategoriesLoaded, videosByCategoryLoaded } from "../../store/reducers/videos";
 
 class Home extends React.Component {
     constructor(props){
@@ -15,25 +14,6 @@ class Home extends React.Component {
         this.state = {
             categoryIndex: 0,
         };
-    }
-
-    componentDidUpdate(prevProps){
-        if(this.props.youtubeLibraryLoaded !== prevProps.youtubeLibraryLoaded) {
-            this.fetchCategoriesAndMostPopularVideos();
-        } else if(this.props.videoCategories !== prevProps.videoCategories) {
-            this.fetchVideoCategories();
-        }
-    }
-
-    fetchVideoCategories() {
-        const categoryStartIndex = this.state.categoryIndex;
-        const categories = this.props.videoCategories.slice(categoryStartIndex, categoryStartIndex + 3);
-        this.props.fetchMostPopularVideosCategory(categories);
-        this.setState(prevState => {
-            return {
-                categoryIndex: prevState.categoryIndex + 3,
-            };
-        });
     }
 
     render() {
@@ -45,6 +25,31 @@ class Home extends React.Component {
                     showLoader={this.shouldShowLoader()}/>
             </>
         );
+    }
+
+    componentDidMount() {
+        if(this.props.youtubeLibraryLoaded) {
+            this.fetchCategoriesAndMostPopularVideos();
+        }
+    }
+    
+    componentDidUpdate(prevProps){
+        if(this.props.youtubeLibraryLoaded !== prevProps.youtubeLibraryLoaded) {
+            this.fetchCategoriesAndMostPopularVideos();
+        } else if(this.props.videoCategories !== prevProps.videoCategories) {
+            this.fetchVideosCategory();
+        }
+    }
+
+    fetchVideosCategory() {
+        const categoryStartIndex = this.state.categoryIndex;
+        const categories = this.props.videoCategories.slice(categoryStartIndex, categoryStartIndex + 3);
+        this.props.fetchMostPopularVideosCategory(categories);
+        this.setState(prevState => {
+            return {
+                categoryIndex: prevState.categoryIndex + 3,
+            };
+        });
     }
 
     bottomReachedCallback = () => {
@@ -61,12 +66,6 @@ class Home extends React.Component {
         return false;
     }
 
-    componentDidMount() {
-        if(this.props.youtubeLibraryLoaded) {
-            this.fetchCategoriesAndMostPopularVideos();
-        }
-    }
-    
     fetchCategoriesAndMostPopularVideos() {
         this.props.fetchMostPopularVideos();
         this.props.fetchVideoCategories();
