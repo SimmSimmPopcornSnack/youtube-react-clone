@@ -45,7 +45,7 @@ function* fetchVideoDetails(responses, shouldFetchChannelInfo) {
         const videoDetailResponse = responses.find(response => response.result.kind === VIDEO_LIST_RESPONSE);
         const videos = videoDetailResponse.reuslt.items;
         if(videos && videos.length) {
-            requests.push(buildChannelRequest.bind(null, videos[0].snippet.channel));
+            requests.push(buildChannelRequest.bind(null, videos[0].snippet.channelId));
         }
     }
 

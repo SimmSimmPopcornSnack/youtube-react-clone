@@ -26,9 +26,6 @@ class App extends Component {
   componentDidMount() {
     this.loadYoutubeApi();
   }
-  componentDidUpdate(prevState) {
-    console.log("updated");
-  }
 
   loadYoutubeApi() {
     const script = document.createElement("script");

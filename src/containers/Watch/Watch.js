@@ -1,10 +1,10 @@
 import React from "react";
-import WatchContent from "./WatchContent/WatchContent";
 import { bindActionCreators } from "redux";
 import * as watchActions from "../../store/actions/watch";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
+import WatchContent from "./WatchContent/WatchContent";
 import { getSearchParam } from "../../services/url";
 import { getChannelId } from "../../store/reducers/videos";
 import * as commentActions from "../../store/actions/comment";

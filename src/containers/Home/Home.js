@@ -37,14 +37,14 @@ class Home extends React.Component {
         if(this.props.youtubeLibraryLoaded !== prevProps.youtubeLibraryLoaded) {
             this.fetchCategoriesAndMostPopularVideos();
         } else if(this.props.videoCategories !== prevProps.videoCategories) {
-            this.fetchVideosCategory();
+            this.fetchVideosByCategory();
         }
     }
 
-    fetchVideosCategory() {
+    fetchVideosByCategory() {
         const categoryStartIndex = this.state.categoryIndex;
         const categories = this.props.videoCategories.slice(categoryStartIndex, categoryStartIndex + 3);
-        this.props.fetchMostPopularVideosCategory(categories);
+        this.props.fetchMostPopularVideosByCategory(categories);
         this.setState(prevState => {
             return {
                 categoryIndex: prevState.categoryIndex + 3,
@@ -77,15 +77,15 @@ function mapStateToProps(state) {
         youtubeLibraryLoaded: getYoutubeLibraryLoaded(state),
         videoCategories: getVideoCategoryIds(state),
         videoCategoriesLoaded: videoCategoriesLoaded(state),
-        videosCategoryLoaded: videosByCategoryLoaded(state),
+        videosByCategoryLoaded: videosByCategoryLoaded(state),
     }
 }
 
 function mapDispatchToProps(dispatch) {
     const fetchMostPopularVideos = videoActions.mostPopular.request;
     const fetchVideoCategories = videoActions.categories.request;
-    const fetchMostPopularVideosCategory = videoActions.mostPopularByCategory.request;
-    return bindActionCreators({fetchMostPopularVideos, fetchVideoCategories, fetchMostPopularVideosCategory}, dispatch);
+    const fetchMostPopularVideosByCategory = videoActions.mostPopularByCategory.request;
+    return bindActionCreators({fetchMostPopularVideos, fetchVideoCategories, fetchMostPopularVideosByCategory}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

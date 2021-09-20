@@ -218,7 +218,7 @@ const getRelatedVideoIds = (state, videoId) => {
 
 export const getRelatedVideos = createSelector(
     getRelatedVideoIds,
-    state => state.video.byId,
+    state => state.videos.byId,
     (relatedVideoIds, videos) => {
         if(relatedVideoIds) {
             // filter kicks out null values we might have
