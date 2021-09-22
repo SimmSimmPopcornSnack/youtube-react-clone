@@ -1,6 +1,15 @@
+export function buildVideoCategoriesRequest() {
+    return buildApiRequest("GET",
+        "/youtube/v3/videoCategories",
+        {
+            "part": "snippet",
+            "regionCode": "US"
+        }, null);
+}
+
 export function buildMostPopularVideosRequest(amount = 12, loadDescription = false, nextPageToken, videoCategoryId = null) {
-    // let fields = "nextPageToken,prevPageToken,items(contentDetails/duration,id,snippet(channelId,channelTitle,publishedAt,thumbnails/medium,title),statistics/viewCount),pageInfo(totalResults)";
-    let fields = "nextPageToken,prevPageToken,items(contentDetails/duration,id,snippet(channelId,channelTitle,localized/title,publishedAt,thumbnails/medium,title),statistics/viewCount),pageInfo(totalResults)";
+    let fields = "nextPageToken,prevPageToken,items(contentDetails/duration,id,snippet(channelId,channelTitle,publishedAt,thumbnails/medium,title),statistics/viewCount),pageInfo(totalResults)";
+    // let fields = "nextPageToken,prevPageToken,items(contentDetails/duration,id,snippet(channelId,channelTitle,localized/title,publishedAt,thumbnails/medium,title),statistics/viewCount),pageInfo(totalResults)";
     if(loadDescription) {
         fields += ",items/snippet/description";
     }
@@ -14,6 +23,59 @@ export function buildMostPopularVideosRequest(amount = 12, loadDescription = fal
         pageToken: nextPageToken,
         fields,
         videoCategoryId,
+    }, null);
+}
+
+export function buildVideoDetailRequest(videoId) {
+    return buildApiRequest("GET",
+    "youtube/v3/videos",
+    {
+        part: "snippet,statistics,contentDetails",
+        id: videoId,
+        fields: "kind,items(contentDetails/duration,id,snippet(channelId,channelTitle,description,publishedAt,thumbnails/medium,title),statistics)"
+    }, null);
+}
+
+export function buildChannelRequest(channelId) {
+    return buildApiRequest("GET",
+    "youtube/v3/channels",
+    {
+        part: "snippet,statistics",
+        id: channelId,
+        fields: "kind,items(id,snippet(description,thumbnails/medium,title),statistics/subscriberCount)"
+    }, null);
+}
+
+export function buildCommentThreadRequest(videoId, nextPageToken) {
+    return buildApiRequest("GET",
+    "/youtube/v3/commentThreads",
+    {
+        part: "id,snippet",
+        pageToken: nextPageToken,
+        videoId,
+    }, null);
+}
+
+export function buildSearchRequest(query, nextPageToken, amount = 12, ) {
+    return buildApiRequest("GET",
+    "/youtube/v3/search",
+    {
+        part: "id,snippet",
+        q: query,
+        type: "video",
+        pageToken: nextPageToken,
+        maxResults: amount,
+    }, null);
+}
+
+export function buildRelatedVideosRequest(videoId, amountRelatedVideo = 12) {
+    return buildApiRequest("GET",
+    "/youtube/v3/search",
+    {
+        part: "snippet",
+        type: "video",
+        maxResults: amountRelatedVideo,
+        relatedToVideoId: videoId,
     }, null);
 }
 
@@ -78,67 +140,7 @@ function createResource(properties) {
                 }
             }
         }
-        return resource;
     }
+    return resource;
 }
 
-export function buildVideoCategoriesRequest() {
-    return buildApiRequest("GET",
-        "/youtube/v3/videoCategories",
-        {
-            "part": "snippet",
-            "regionCode": "US"
-        }, null);
-}
-
-export function buildVideoDetailRequest(videoId) {
-    return buildApiRequest("GET",
-    "youtube/v3/videos",
-    {
-        part: "snippet,statistics,contentDetails",
-        id: videoId,
-        fields: "kind,items(contentDetails/duration,id,snippet(channelId,channelTitle,description,publishedAt,thumbnails/medium,title),statistics)"
-    }, null);
-}
-
-export function buildRelatedVideosRequest(videoId, amountRelatedVideo = 12) {
-    return buildApiRequest("GET",
-    "/youtube/v2/search",
-    {
-        part: "snippet",
-        type: "video",
-        maxResults: amountRelatedVideo,
-        relatedToVideoId: videoId,
-    }, null);
-}
-
-export function buildChannelRequest(channelId) {
-    return buildApiRequest("GET",
-    "youtube/v3/channels",
-    {
-        part: "snippet,statistics",
-        id: channelId,
-        fields: "kind,items(id,snippet(description,thumbnails/medium,title),statistics/subscriberCount)"
-    }, null);
-}
-
-export function buildCommentThreadRequest(videoId, nextPageToken) {
-    return buildApiRequest("GET",
-    "/youtube/v3/commentThreads",
-    {
-        part: "id,snippet",
-        pageToken: nextPageToken,
-        videoId,
-    }, null);
-}
-export function buildSearchRequest(query, nextPageToken, amount = 12, ) {
-    return buildApiRequest("GET",
-    "/youtube/v3/search",
-    {
-        part: "id,snippet",
-        q: query,
-        type: "video",
-        pageToken: nextPageToken,
-        maxResults: amount,
-    }, null);
-}

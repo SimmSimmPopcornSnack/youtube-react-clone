@@ -1,5 +1,4 @@
 import { createAction, createRequestTypes, FAILURE, REQUEST, SUCCESS } from ".";
-import { SEARCH_LIST_RESPONSE } from "../api/youtube-api-response-types";
 
 export const SEARCH_FOR_VIDEOS = createRequestTypes("SEARCH_FOR_VIDEOS");
 export const forVideos = {

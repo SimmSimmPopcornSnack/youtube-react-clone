@@ -20,10 +20,10 @@ class WatchContent extends React.Component {
             <InfiniteScroll bottomReachedCallback={this.props.bottomReachedCallback} showLoader={this.shouldShowLoader()}>
                 <div className="watch-grid">
                     <Video className="video" id={this.props.videoId} />
-                    <VideoMetadata video={this.props.video} />
+                    <VideoMetadata className="metadata" video={this.props.video} />
                     <VideoInfoBox className="video-info-box" video={this.props.video} channel={this.props.channel} />
-                    <Comments className="comments" comments={this.props.comments} amountComments={this.props.amountComments} />
                     <RelatedVideos className="related-video" videos={this.props.relatedVideos} />
+                    <Comments className="comments" comments={this.props.comments} amountComments={this.props.amountComments} />
                 </div>
             </InfiniteScroll>
         );

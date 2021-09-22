@@ -10,14 +10,14 @@ const AMOUNT_TRENDING_VIDEOS = 12;
 export class HomeContent extends React.Component {
     render() {
         const trendingVideos = this.getTrendingVideos();
-        const categoryyGrids = this.getVideoGridsForCategories();
+        const categoryGrids = this.getVideoGridsForCategories();
 
         return(
             <div className="home-content">
                 <div className="responsive-video-grid-container">
                     <InfiniteScroll bottomReachedCallback={this.props.bottomReachedCallback} showLoader={this.props.showLoader}>
                         <VideoGrid title="Trending" videos={trendingVideos}/>
-                        {categoryyGrids}
+                        {categoryGrids}
                     </InfiniteScroll>
                 </div>
             </div>

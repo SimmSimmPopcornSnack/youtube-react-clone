@@ -12,5 +12,5 @@ export const videoDetails = {
         throw Error("not implemented");
     },
     success: (response) => createAction(VIDEO_DETAILS[SUCCESS], {response}),
-    failure: (response) => createAction(VIDEO_DETAILS[FAILURE]),
+    failure: (response) => createAction(VIDEO_DETAILS[FAILURE], {response}),
 };

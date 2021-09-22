@@ -7,18 +7,15 @@ import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
 import WatchContent from "./WatchContent/WatchContent";
 import { getSearchParam } from "../../services/url";
 import { getChannelId } from "../../store/reducers/videos";
-import * as commentActions from "../../store/actions/comment";
 import { getCommentNextPageToken } from "../../store/reducers/comments";
+import * as commentActions from "../../store/actions/comment";
 
 export class Watch extends React.Component {
-    getVideoId() {
-        return getSearchParam(this.props.location, "v")
-    }
     render() {
         const videoId = this.getVideoId();
         return (<WatchContent videoId={videoId}
                               channelId={this.props.channelId}
-                              bottonReachedCallback={this.fetchMoreComments}
+                              bottomReachedCallback={this.fetchMoreComments}
                               nextPageToken={this.props.nextPageToken}
         />);
     }
@@ -35,12 +32,22 @@ export class Watch extends React.Component {
         }
     } 
 
+    getVideoId() {
+        return getSearchParam(this.props.location, "v")
+    }
+
     fetchWatchContent() {
         const videoId = this.getVideoId();
         if(!videoId) {
             this.props.history.push("/");
         }
         this.props.fetchWatchDetails(videoId, this.props.channelId);
+    }
+
+    fetchMoreComments = () => {
+        if(this.props.nextPageToken) {
+            this.props.fetchCommentThread(this.getVideoId(), this.props.nextPageToken);
+        }
     }
 }
 
