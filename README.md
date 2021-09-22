@@ -1,3 +1,10 @@
+This repository is based on an excellent tutorial:  
+
+Build Youtube in React 01: Project Kickoff  
+https://productioncoder.com/build-youtube-in-react-part-1/  
+https://github.com/productioncoder/youtube-react  
+
+
 ## NOTE  
 - After a search component in top menu with "Input" tag, React show a warning on findDomNode. But I cannot do anything because it's about Semantic-UI and the team is fixing it now. https://react.semantic-ui.com/addons/ref/  BTW, one of the reasons is that I specify <React.StrictMode> in index.js to start App. The warning is gone when the strict-node tag is deleted.  
 - When you run "npm audit fix", it shows WARNING SKIPPING OPTIONAL DEPENDENCIES, you can safely ignore it. https://stackoverflow.com/questions/56103865/how-to-fix-unsupported-platform-for-fsevents1-2-9-wanted-osdarwin-arch/58775654#58775654, https://react.semantic-ui.com/addons/ref/   
