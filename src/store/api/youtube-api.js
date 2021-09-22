@@ -28,7 +28,7 @@ export function buildMostPopularVideosRequest(amount = 12, loadDescription = fal
 
 export function buildVideoDetailRequest(videoId) {
     return buildApiRequest("GET",
-    "youtube/v3/videos",
+    "/youtube/v3/videos",
     {
         part: "snippet,statistics,contentDetails",
         id: videoId,
@@ -38,7 +38,7 @@ export function buildVideoDetailRequest(videoId) {
 
 export function buildChannelRequest(channelId) {
     return buildApiRequest("GET",
-    "youtube/v3/channels",
+    "/youtube/v3/channels",
     {
         part: "snippet,statistics",
         id: channelId,

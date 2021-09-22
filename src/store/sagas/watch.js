@@ -16,7 +16,7 @@ export function* fetchWatchDetails(videoId, channelId) {
         buildCommentThreadRequest.bind(null, videoId)
     ];
 
-    if(!channelId) {
+    if(channelId) {
         requests.push(buildChannelRequest.bind(null, channelId));
     }
     
