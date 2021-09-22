@@ -3,7 +3,7 @@ import {Icon, Menu} from "semantic-ui-react";
 import "./SideBarItem.scss";
 import { Link, withRouter } from "react-router-dom";
 
-export class SideBarItem extends React.Component {
+class SideBarItem extends React.Component {
     render() {
         // React will ignore custom boolean attribute, therefore we pass a string
         // we use this attribute in our SCSS for styling

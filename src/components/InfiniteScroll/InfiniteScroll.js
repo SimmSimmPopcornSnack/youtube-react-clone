@@ -9,7 +9,7 @@ export function InfiniteScroll(props) {
         {props.children}
         <Waypoint onEnter={props.bottomReachedCallback}>
             <div className="loader-container">
-                <Loader active={props.showLoader} iniline="centered"/>
+                <Loader active={props.showLoader} inline="centered"/>
             </div>
         </Waypoint>
     </>
