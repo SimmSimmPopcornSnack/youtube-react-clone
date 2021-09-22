@@ -4,21 +4,17 @@ exports[`Rating reders 1`] = `
 <div
   className="rating"
 >
-  <div
-    className="thumbs-up"
-  >
+  <div>
     <Icon
       as="i"
-      name="thumbs up outline"
+      name="thumbs outline up"
     />
     <span />
   </div>
-  <div
-    className="thumbs-down"
-  >
+  <div>
     <Icon
       as="i"
-      name="thumbs down outline"
+      name="thumbs outline down"
     />
     <span />
   </div>

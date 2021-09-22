@@ -9,7 +9,7 @@ exports[`Subscription renders broadcasting Subscription 1`] = `
       <Image
         as="img"
         avatar={true}
-        src="http://via.placeholder.com/28x28"
+        src="https://via.placeholder.com/28x28"
         ui={true}
       />
       <span>
@@ -33,7 +33,7 @@ exports[`Subscription renders empty Subscription 1`] = `
       <Image
         as="img"
         avatar={true}
-        src="http://via.placeholder.com/28x28"
+        src="https://via.placeholder.com/28x28"
         ui={true}
       />
       <span />
@@ -51,7 +51,7 @@ exports[`Subscription renders non-broadcasting Subscription with new videos 1`] 
       <Image
         as="img"
         avatar={true}
-        src="http://via.placeholder.com/28x28"
+        src="https://via.placeholder.com/28x28"
         ui={true}
       />
       <span>
@@ -59,7 +59,7 @@ exports[`Subscription renders non-broadcasting Subscription with new videos 1`] 
       </span>
     </div>
     <span
-      className="new-video-count"
+      className="new-videos-count"
     >
       4
     </span>

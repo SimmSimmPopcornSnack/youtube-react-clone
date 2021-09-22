@@ -30,7 +30,7 @@ exports[`SideBarItem renders highlighted SideBarItem that navigates to /feed/tre
 <Link
   to={
     Object {
-      "pathname": undefined,
+      "pathname": "/feed/trending",
     }
   }
 >
@@ -64,7 +64,7 @@ exports[`SideBarItem renders highlighted SideBarItem with no navigaiton 1`] = `
   }
 >
   <MenuItem
-    className="sidebar-item highlight-item"
+    className="sidebar-item "
   >
     <div
       className="sidebar-item-alignment-container"
