@@ -57,6 +57,9 @@ function reduceCommentThread(response, videoId, prevState) {
     };
 }
 
+/*
+* Selectors
+ */
 const getCommentIdsForVideo = (state, videoId) => {
     const comment = state.comments.byVideo[videoId];
     if(comment) {

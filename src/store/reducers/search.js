@@ -4,9 +4,9 @@ import { REQUEST, SUCCESS } from "../actions";
 export default function(state = {}, action) {
     switch(action.type) {
         case SEARCH_FOR_VIDEOS[SUCCESS]:
-            return reduceSearchForVideos(action.response, action.searchQuery);
+            return reduceSearchForVideos(action.response, action.searchQuery, state);
         case SEARCH_FOR_VIDEOS[REQUEST]:
-            // delete the previsous search element if we don't load more search results for the revious search query
+            // delete the previous search element if we don't load more search results for the revious search query
             return action.nextPageToken ? state : {};
         default:
             return state;
@@ -14,18 +14,21 @@ export default function(state = {}, action) {
 };
 
 function reduceSearchForVideos(response, searchQuery, prevState) {
-    let searchResult = response.items.map(item => ({...item, id: item.id.videoId}));
+    let searchResults = response.items.map(item => ({...item, id: item.id.videoId}));
     if(prevState.query === searchQuery) { // for infinity scroll
-        const prevResult = prevState.result || [];
-        searchResult = prevResult.concat(searchResult);
+        const prevResults = prevState.results || [];
+        searchResults = prevResults.concat(searchResults);
     }
     return {
         totalResults: response.pageInfo.totalResults,
         nextPageToken: response.nextPageToken,
         query: searchQuery,
-        results: searchResult
+        results: searchResults
     };
 }
 
-export const getSearchResults = (state) => state.search.searchResult;
+/*
+  Selectors
+ */
+export const getSearchResults = (state) => state.search.results;
 export const getSearchNextPageToken = (state) => state.search.nextPageToken;

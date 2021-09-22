@@ -1,6 +1,6 @@
 import apiReducer from "./api";
-import videosReducer from "./videos";
 import { combineReducers } from "redux";
+import videosReducer from "./videos";
 import channelsReducer from "./channels";
 import commentsReducer from "./comments";
 import searchReducer from "./search";

@@ -22,8 +22,8 @@ function reduceWatchDetails(responses, prevState) {
     let channels = {};
     if (channelResponse && channelResponse.result.items) {
         // we know that there will only be one item
-        // becase we ask for a channel with a specific id
-        const channel = channelResponse.items[0];
+        // because we ask for a channel with a specific id
+        const channel = channelResponse.result.items[0];
         channels[channel.id] = channel;
     }
     return {
@@ -36,11 +36,11 @@ function reduceWatchDetails(responses, prevState) {
 }
 
 function reduceVideoDetails(responses, prevState) {
-    const channelResponse = responses.find(response => response.reuslt.kind === CHANNEL_LIST_RESPONSE);
+    const channelResponse = responses.find(response => response.result.kind === CHANNEL_LIST_RESPONSE);
     let channelEntry = {};
-    if(channelResponse & channelResponse.result.items) {
+    if(channelResponse && channelResponse.result.items) {
         // we're explicitly asking for a channel with a particular id
-        // so the response set must either 0 items (if a channel with the specified id does not exist)
+        // so the response set must either contain 0 items (if a channel with the specified id does not exist)
         // or at most one item (i.e. the channel we've been asking for)
         const channel = channelResponse.result.items[0];
         channelEntry = {
@@ -52,12 +52,15 @@ function reduceVideoDetails(responses, prevState) {
         ...prevState,
         byId: {
             ...prevState.byId,
-            channelEntry,
+            ...channelEntry,
         }
     };
 }
 
+/*
+*   Selectors
+* */
 export const getChannel = (state, channelId) => {
     if(!channelId) return null;
     return state.channels.byId[channelId];
-}
+};

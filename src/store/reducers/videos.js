@@ -1,14 +1,16 @@
-import { categories, mostPopular, MOST_POPULAR, MOST_POPULAR_BY_CATEGORY, VIDEO_CATEGORIES } from "../actions/video";
+import { MOST_POPULAR, MOST_POPULAR_BY_CATEGORY, VIDEO_CATEGORIES } from "../actions/video";
 import { SUCCESS } from "../actions";
-import { createSelector, createStructuredSelector } from "reselect";
+import { createSelector } from "reselect";
+import { SEARCH_LIST_RESPONSE, VIDEO_LIST_RESPONSE } from "../api/youtube-api-response-types";
 import { VIDEO_DETAILS, WATCH_DETAILS } from "../actions/watch";
-import { VIDEO_LIST_RESPONSE, SEARCH_LIST_RESPONSE } from "../api/youtube-api-response-types";
 import { getSearchParam } from "../../services/url";
 
 export const initialState = {
     byId: {},
     mostPopular: {},
     categories: {},
+    byCategory: {},
+    related: {},
 };
 export default function videos(state = initialState, action) {
     switch (action.type) {
@@ -21,7 +23,7 @@ export default function videos(state = initialState, action) {
         case WATCH_DETAILS[SUCCESS]:
             return reduceWatchDetails(action.response, state);
         case VIDEO_DETAILS[SUCCESS]:
-            return reducerVideoDetails(action.responses, state);
+            return reduceVideoDetails(action.response, state);
         default:
             return state;
     }
@@ -71,18 +73,20 @@ function reduceFetchMostPopularVideosByCategory(responses, categories, prevState
         if(response.status === 400) return;
 
         const categoryId = categories[index];
-        const {byId, byCategory} = groupVideoByIdAndCategory(response.result);
+        const {byId, byCategory} = groupVideosByIdAndCategory(response.result);
+        videoMap = {...videoMap, ...byId};
+        byCategoryMap[categoryId] = byCategory;
     });
 
     // compute new state
     return {
         ...prevState, 
         byId: {...prevState.byId, ...videoMap},
-        byCategory: {...prevState, ...byCategoryMap},
+        byCategory: {...prevState.byCategory, ...byCategoryMap},
     };
 }
 
-function groupVideoByIdAndCategory(response) {
+function groupVideosByIdAndCategory(response) {
     const videos = response.items;
     const byId ={};
     const byCategory = {
@@ -92,7 +96,7 @@ function groupVideoByIdAndCategory(response) {
     };
 
     videos.forEach((video) => {
-        byId[videos.id] = video;
+        byId[video.id] = video;
 
         const items = byCategory.items;
         if(items && items) {
@@ -116,7 +120,7 @@ function reduceWatchDetails(responses, prevState) {
         ...prevState,
         byId: {
             ...prevState.byId,
-            ...{[video.id]: video},
+            [video.id]: video
         },
         related: {
             ...prevState.related,
@@ -126,9 +130,9 @@ function reduceWatchDetails(responses, prevState) {
 }
 
 function reduceRelatedVideosRequest(responses) {
-    const reduceRelatedVideosResponse = responses.find(r => r.result.bind  === SEARCH_LIST_RESPONSE);
-    const {pageInfo, items, nextPageToken} = reduceRelatedVideosResponse.result;
-    const relatedVideoIds = items.map(video => video.id);
+    const relatedVideosResponse = responses.find(r => r.result.kind  === SEARCH_LIST_RESPONSE);
+    const {pageInfo, items, nextPageToken} = relatedVideosResponse.result;
+    const relatedVideoIds = items.map(video => video.id.videoId);
 
     return {
         totalResults: pageInfo.totalResults,
@@ -137,12 +141,12 @@ function reduceRelatedVideosRequest(responses) {
     };
 }
 
-function reducerVideoDetails(responses, prevState) {
+function reduceVideoDetails(responses, prevState) {
     const videoResponses = responses.filter(response => response.result.kind === VIDEO_LIST_RESPONSE);
     const parsedVideos = videoResponses.reduce((videoMap, response) => {
         // we're explicitly asking for a video with a particular id
         // so the response set must either contain 0 items (if a video with the id does not exist)
-        // or at most one item (i.e. the video we've been asking for)
+        // or at most one item (i.e. the channel we've been asking for)
         const video = response.result.items ? response.result.items[0] : null;
         if(!video) {
             return videoMap;
@@ -161,9 +165,10 @@ function reducerVideoDetails(responses, prevState) {
 /*
 *   Selectors
 * */
+const getMostPopular = (state) => state.videos.mostPopular;
 export const getMostPopularVideos = createSelector(
     (state) => state.videos.byId,
-    (state) => state.videos.mostPopular,
+    getMostPopular,
     (videosById, mostPopular) => {
         if(!mostPopular || !mostPopular.items) {
             return [];
@@ -196,7 +201,7 @@ export const getVideosByCategory = createSelector(
 export const videoCategoriesLoaded = createSelector(
     state => state.videos.categories,
     (categories) => {
-        return Object.keys(categories || {}).keys.length !== 0;
+        return Object.keys(categories || {}).length !== 0;
     }
 );
 
@@ -208,8 +213,8 @@ export const videosByCategoryLoaded = createSelector(
 );
 
 export const getVideoById = (state, videoId) => {
-    return state.video.byId[videoId];
-}
+    return state.videos.byId[videoId];
+};
 
 const getRelatedVideoIds = (state, videoId) => {
     const related = state.videos.related[videoId];
@@ -245,14 +250,6 @@ export const getAmountComments = createSelector(
         return 0;
     });
 
-const getMostPopular = (state) => state.video.mostPopular;
-export const getMostPopularVideosNextPageToken = createSelector(
-    getMostPopular,
-    (mostPopular) => {
-        return mostPopular.nextPageToken;
-    }
-);
-
 export const allMostPopularVideosLoaded = createSelector(
     [getMostPopular],
     (mostPopular) => {
@@ -260,3 +257,11 @@ export const allMostPopularVideosLoaded = createSelector(
         return amountFetchedItems === mostPopular.totalResults;
     }
 );
+
+export const getMostPopularVideosNextPageToken = createSelector(
+    [getMostPopular],
+    (mostPopular) => {
+        return mostPopular.nextPageToken;
+    }
+);
+
