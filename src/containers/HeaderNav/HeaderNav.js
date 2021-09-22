@@ -25,7 +25,7 @@ export class HeaderNav extends React.Component {
                                 <Input placeholder='Search'
                                        size='small'
                                        action='Go'
-                                       value={this.props.query}
+                                       value={this.state.query}
                                        onChange={this.onInputChange}
                                 />
                             </Form.Field>
@@ -44,7 +44,7 @@ export class HeaderNav extends React.Component {
                         <Menu.Item>
                             <Icon className="header-icon" name="alarm" size="large" />
                         </Menu.Item>
-                        <Menu.Item>
+                        <Menu.Item name="avatar">
                             <Image src="http://via.placeholder.com/80x80" avatar />
                         </Menu.Item>
                     </Menu.Menu>
@@ -61,7 +61,7 @@ export class HeaderNav extends React.Component {
 
     onSubmit = () => {
         const escapedSearchQuery = encodeURI(this.state.query);
-        this.props.history.push(`/search?search_query=${escapedSearchQuery}`);
+        this.props.history.push(`/results?search_query=${escapedSearchQuery}`);
     };
 }
 

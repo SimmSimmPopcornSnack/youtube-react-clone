@@ -1,10 +1,10 @@
 import {fork, take, all, put, call} from "redux-saga/effects";
-import * as watchAction from "../actions/watch";
+import * as watchActions from "../actions/watch";
 import {
-    buildChannelRequest,
-    buildCommentThreadRequest,
+    buildVideoDetailRequest,
     buildRelatedVideosRequest, 
-    buildVideoDetailRequest
+    buildChannelRequest,
+    buildCommentThreadRequest
 } from "../api/youtube-api";
 import { REQUEST } from "../actions";
 import { SEARCH_LIST_RESPONSE, VIDEO_LIST_RESPONSE } from "../api/youtube-api-response-types";
@@ -12,8 +12,8 @@ import { SEARCH_LIST_RESPONSE, VIDEO_LIST_RESPONSE } from "../api/youtube-api-re
 export function* fetchWatchDetails(videoId, channelId) {
     let requests = [
         buildVideoDetailRequest.bind(null, videoId),
-        buildRelatedVideosRequest(null, videoId),
-        buildCommentThreadRequest(null, videoId)
+        buildRelatedVideosRequest.bind(null, videoId),
+        buildCommentThreadRequest.bind(null, videoId)
     ];
 
     if(!channelId) {
@@ -22,10 +22,10 @@ export function* fetchWatchDetails(videoId, channelId) {
     
     try {
         const responses = yield all(requests.map(fn => call(fn)));
-        yield put(watchAction.details.success(requests, videoId));
+        yield put(watchActions.details.success(responses, videoId));
         yield call(fetchVideoDetails, responses, channelId === null);
     } catch (error) {
-        yield put(watchAction.details.failure(error));
+        yield put(watchActions.details.failure(error));
     }
 }
 
@@ -40,10 +40,10 @@ function* fetchVideoDetails(responses, shouldFetchChannelInfo) {
     if(shouldFetchChannelInfo) {
         // we have to extract the video's channel id from the video details response
         // so we can load additional channel information.
-        // this is only needee, when a user directly accesses .../watch?v=1234
+        // this is only needed, when a user directly accesses .../watch?v=1234
         // because then we only know the video id
         const videoDetailResponse = responses.find(response => response.result.kind === VIDEO_LIST_RESPONSE);
-        const videos = videoDetailResponse.reuslt.items;
+        const videos = videoDetailResponse.result.items;
         if(videos && videos.length) {
             requests.push(buildChannelRequest.bind(null, videos[0].snippet.channelId));
         }
@@ -51,16 +51,19 @@ function* fetchVideoDetails(responses, shouldFetchChannelInfo) {
 
     try {
         const responses = yield all(requests.map(fn => call(fn)));
-        yield put(watchAction.videoDetails.success(responses));
+        yield put(watchActions.videoDetails.success(responses));
     } catch (error) {
-        yield put(watchAction.videoDetails.failure(error));
+        yield put(watchActions.videoDetails.failure(error));
     }
 }
 
+/******************************************************************************/
+/******************************* WATCHERS *************************************/
+/******************************************************************************/
 export function* watchWatchDetails(){
     while(true){
-        const {videoId} = yield take(watchAction.WATCH_DETAILS[REQUEST]);
-        yield fork(fetchWatchDetails, videoId);
+        const {videoId, channelId} = yield take(watchActions.WATCH_DETAILS[REQUEST]);
+        yield fork(fetchWatchDetails, videoId, channelId);
     }
 }
 

@@ -1,12 +1,11 @@
 import React from "react";
 import { Image } from "semantic-ui-react";
 import "./VideoPreview.scss";
-import { Link } from "react-router-dom";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import { getShortNumberString } from "../../services/number/number-format";
 import { getVideoDurationString } from "../../services/date/date-format";
-import { getMostPopularVideos } from "../../store/reducers/videos";
+import { Link } from "react-router-dom";
 
 TimeAgo.locale(en);
 const timeAgo = new TimeAgo("en-US");
@@ -17,8 +16,9 @@ export class VideoPreview extends React.Component {
         if(!video) {
             return <div/>;
         }
+        const duration = video.contentDetails ? video.contentDetails.duration : null;
+        const videoDuration = getVideoDurationString(duration);
         const viewAndTimeString = VideoPreview.getFormattedViewAndTime(video);
-        const videoDuration = getVideoDurationString(video.contentDetails.duration);
         const horizontal = this.props.horizontal ? "horizontal" : null;
         const expanded = this.props.expanded ? 'expanded' : null;
         const description = this.props.expanded ? video.snippet.description : null;
@@ -36,7 +36,7 @@ export class VideoPreview extends React.Component {
                         <div className={["semi-bold", "show-max-two-lines", expanded].join(" ")}>{video.snippet.title}</div>
                         <div className="video-preview-metadata-container">
                             <div className="channel-title">{video.snippet.channelTitle}</div>
-                            <div className="view-and-time"><span>{viewAndTimeString}</span></div>
+                            <div className="view-and-time">{viewAndTimeString}</div>
                             <div className="show-max-two-lines">{description}</div>
                         </div>
                     </div>

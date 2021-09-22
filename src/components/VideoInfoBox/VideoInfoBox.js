@@ -10,35 +10,7 @@ export class VideoInfoBox extends React.Component {
         super(props);
         this.state = {
             collapsed: true,
-        }
-    }
-
-    getDescriptionParagraphs() {
-        const videoDescription = this.props.video.snippet ? this.props.video.snippet.description : null;
-        if(!videoDescription) {
-            return null;
-        }
-        return videoDescription.split("\n").map((paragraph, index) => <p key={index}><ReactLinkify>{paragraph}</ReactLinkify></p>);
-    }
-
-    getConfig() {
-        let descriptionTextClass = "collapsed";
-        let buttonTitle = "Show Mode";
-        if(!this.state.collapsed) {
-            descriptionTextClass = "expanded";
-            buttonTitle = "Show Less";
-        }
-        return {
-            descriptionTextClass,
-            buttonTitle
         };
-    }
-
-    getSubscriberButtonText() {
-        const {channel} = this.props;
-        const parseSubscriberCount = Number(channel.statistics.subscriberCount);
-        const subscriberCount = getShortNumberString(parseSubscriberCount);
-        return `Subscribe ${subscriberCount}`;
     }
 
     render() {
@@ -46,7 +18,7 @@ export class VideoInfoBox extends React.Component {
             return<div/>;
         }
 
-        const descriptionParagraph = this.getDescriptionParagraphs();
+        const descriptionParagraphs = this.getDescriptionParagraphs();
         const {descriptionTextClass, buttonTitle} = this.getConfig();
         const publishedAtString = getPublishedAtDateString(this.props.video.snippet.publishedAt);
 
@@ -63,10 +35,10 @@ export class VideoInfoBox extends React.Component {
                         <div className="channel-name">{channelTitle}</div>
                         <div className="video-publication-date">{publishedAtString}</div>
                     </div>
-                    <Button color="youtube">{buttonText}</Button>
+                    <Button className="subscribe" color="youtube">{buttonText}</Button>
                     <div className="video-description">
                         <div className={descriptionTextClass}>
-                            {descriptionParagraph}
+                            {descriptionParagraphs}
                         </div>
                         <Button compact onClick={this.onToggleCollapseButtonClick}>{buttonTitle}</Button>
                     </div>
@@ -82,5 +54,34 @@ export class VideoInfoBox extends React.Component {
                 collapsed: !prevState.collapsed
             };
         });
+    };
+
+    getDescriptionParagraphs() {
+        const videoDescription = this.props.video.snippet ? this.props.video.snippet.description : null;
+        if(!videoDescription) {
+            return null;
+        }
+        return videoDescription.split("\n").map((paragraph, index) => <p key={index}><ReactLinkify>{paragraph}</ReactLinkify></p>);
     }
+
+    getSubscriberButtonText() {
+        const {channel} = this.props;
+        const parsedSubscriberCount = Number(channel.statistics.subscriberCount);
+        const subscriberCount = getShortNumberString(parsedSubscriberCount);
+        return `Subscribe ${subscriberCount}`;
+    }
+
+    getConfig() {
+        let descriptionTextClass = "collapsed";
+        let buttonTitle = "Show More";
+        if(!this.state.collapsed) {
+            descriptionTextClass = "expanded";
+            buttonTitle = "Show Less";
+        }
+        return {
+            descriptionTextClass,
+            buttonTitle
+        };
+    }
+
 }

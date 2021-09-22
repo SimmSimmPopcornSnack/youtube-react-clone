@@ -1,7 +1,7 @@
 import React from "react";
-import { Sidebar } from "semantic-ui-react";
 import { SideBar } from "../../containers/SideBar/SideBar";
 import { InfiniteScroll } from "../InfiniteScroll/InfiniteScroll";
+import "./VideoList.scss";
 import { VideoPreview } from "../VideoPreview/VideoPreview";
 
 export class VideoList extends React.Component {

@@ -1,8 +1,6 @@
 import React from "react";
-import { VideoList } from "../../components/VideoList/VideoList";
-import { VideoPreview } from "../../components/VideoPreview/VideoPreview";
-import { SideBar } from "../SideBar/SideBar";
-import { Sidebar } from "semantic-ui-react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import * as videoActions from "../../store/actions/video";
 import { 
     allMostPopularVideosLoaded,
@@ -10,13 +8,19 @@ import {
     getMostPopularVideosNextPageToken
  } from "../../store/reducers/videos";
 import { getYoutubeLibraryLoaded } from "../../store/reducers/api";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { InfiniteScroll } from "../../components/InfiniteScroll/InfiniteScroll";
+import { VideoList } from "../../components/VideoList/VideoList";
 
 class Trending extends React.Component {
+    componentDidMount() {
+        this.fetchTrendingVideos();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.youtubeLibraryLoaded !== this.props.youtubeLibraryLoaded) {
+            this.fetchTrendingVideos();
+        }
+    }
     render () {
-        const previews = this.getVideoPreviews();
         const loaderActive = this.shouldShowLoader(); 
         return (<VideoList
             bottomReachedCallback={this.fetchMoreVideos}
@@ -24,30 +28,20 @@ class Trending extends React.Component {
             videos={this.props.videos}/>);
     }
 
-    shouldShowLoader() {
-        return !this.props.allMostPopularVideosLoaded;
-    }
-
-    componentDidMount() {
-        this.fetchMostPopularVideos();
-    }
-
-    componentDidUpdate(prevProps) {
-        if(this.props.youtubeLibraryLoaded !== prevProps.youtubeLibraryLoaded) {
-            this.fetchTrendingVideos();
-        }
-    }
-    fetchTrendingVideos() {
-        if(this.props.youtubeLibraryLoaded) {
-            this.props.fetchMostPopularVideos(20, true);
-        }
-    }
     fetchMoreVideos = () => {
         const {nextPageToken} = this.props;
         if(this.props.youtubeLibraryLoaded && nextPageToken) {
             this.props.fetchMostPopularVideos(12, true, nextPageToken);
         }
     };
+    fetchTrendingVideos() {
+        if(this.props.youtubeLibraryLoaded) {
+            this.props.fetchMostPopularVideos(20, true);
+        }
+    }
+    shouldShowLoader() {
+        return !this.props.allMostPopularVideosLoaded;
+    }
  }
 
 function mapStateToProps(state) {
@@ -64,4 +58,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({fetchMostPopularVideos}, dispatch);
 }
 
-export default Trending;
+export default connect(mapStateToProps, mapDispatchToProps)(Trending);

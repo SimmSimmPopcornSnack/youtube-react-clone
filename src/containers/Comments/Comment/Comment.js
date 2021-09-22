@@ -8,17 +8,17 @@ export function Comment(props) {
         return <div/>;
     }
     const topLevelComment = props.comment.snippet.topLevelComment;
-    const {authorProfileImageUrl, authourDisplayName, textOriginal} = topLevelComment.snippet;
+    const {authorProfileImageUrl, authorDisplayName, textOriginal} = topLevelComment.snippet;
     const likeCount = topLevelComment.snippet.likeCount;
 
     return (
         <div className="comment">
             <Image className="user-image" src={authorProfileImageUrl} circular/>
             <div>
-                <div className="user-name">{authourDisplayName}</div>
+                <div className="user-name">{authorDisplayName}</div>
                 <span>{textOriginal}</span>
-                <div class="comment-actions">
-                    <Rating likeCount={likeCount}/><Button size='mini' compact>Reply</Button>
+                <div className="comment-actions">
+                    <Rating likeCount={likeCount}/><Button size='mini' compact>REPLY</Button>
                 </div>
             </div>
         </div>

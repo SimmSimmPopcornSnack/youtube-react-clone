@@ -11,7 +11,7 @@ export function VideoMetadata(props) {
 
     return (
         <div className="video-metadata">
-            <h3>{props.video.title}</h3>
+            <h3>{props.video.snippet.title}</h3>
             <div className="video-stats">
                 <span>{viewCount} views</span>
                 <div className="video-actions">

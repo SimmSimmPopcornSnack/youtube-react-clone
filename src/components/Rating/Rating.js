@@ -12,20 +12,20 @@ export function Rating(props) {
         const amountDislikes = parseFloat(props.dislikeCount);
         const percentagePositiveRatings = 100. * (amountLikes / (amountLikes + amountDislikes));
 
-        // Now that we have calculated the percentage, we brind the numbers into a better readable format
+        // Now that we have calculated the percentage, we bring the numbers into a better readable format
         likeCount = getShortNumberString(amountLikes);
         dislikeCount = getShortNumberString(amountDislikes);
-        rating = <Progress className="progress" percent={percentagePositiveRatings} size="tiny"/>
+        rating = <Progress percent={percentagePositiveRatings} size="tiny"/>
     }
 
     return(
         <div className="rating">
-            <div className="thumbs-up">
-                <Icon name="thumbs up outline"/>
+            <div>
+                <Icon name="thumbs outline up"/>
                 <span>{likeCount}</span>
             </div>
-            <div className="thumbs-down">
-                <Icon name="thumbs down outline"/>
+            <div>
+                <Icon name="thumbs outline down"/>
                 <span>{dislikeCount}</span>
             </div>
             {rating}

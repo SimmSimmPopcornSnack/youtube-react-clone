@@ -1,5 +1,5 @@
 import {all, call, put, fork} from "redux-saga/effects";
-import {watchMostPopularVideos, watchVideoCategories, watchMostPopularVideosByCategory} from "./video";
+import {watchMostPopularVideos, watchMostPopularVideosByCategory, watchVideoCategories} from "./video";
 import { watchWatchDetails } from "./watch";
 import { watchCommentThread } from "./comment";
 import { watchSearchForVideos } from "./search";
@@ -15,12 +15,6 @@ export default function* () {
     ]);
 }
 
-export function ignoreErrors(fn, ...args){
-    return () => {
-        const ignoreErrorCallback = (response) => response;
-        return fn(...args).then(ignoreErrorCallback, ignoreErrorCallback);
-    }
-}
 /*
 * entity must have a success, request and failure methods
 * request is a function that returns a promise when called
@@ -33,5 +27,12 @@ export function* fetchEntity(request, entity, ...args) {
         yield put(entity.success(response.result, ...args));
     } catch (error) {
         yield put(entity.failure(error, ...args));
+    }
+}
+
+export function ignoreErrors(fn, ...args){
+    return () => {
+        const ignoreErrorCallback = (response) => response;
+        return fn(...args).then(ignoreErrorCallback, ignoreErrorCallback);
     }
 }

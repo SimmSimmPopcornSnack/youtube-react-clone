@@ -12,14 +12,22 @@ export function parseISO8601TimePattern(durationString) {
     }, {});
 }
 
-export function getVideoDurationString(iso8601DateString) {
-    if(!iso8601DateString || iso8601DateString === ''){
+export function getPublishedAtDateString(iso8601DateString) {
+    if(!iso8601DateString) {
+        return "";
+    }
+    const date = new Date(Date.parse(iso8601DateString));
+    return date.toDateString();
+}
+
+export function getVideoDurationString(iso8601DurationString) {
+    if(!iso8601DurationString || iso8601DurationString === ''){
         return "";
     }
 
     // new Date(Date.parse(...)) doesn't work here
     // therefore we are using our regex approach
-    let {days, hours, minutes, seconds} = parseISO8601TimePattern(iso8601DateString);
+    let {days, hours, minutes, seconds} = parseISO8601TimePattern(iso8601DurationString);
 
     let secondsString = seconds.toString();
     let minutesString = minutes.toString();
@@ -38,10 +46,3 @@ export function getVideoDurationString(iso8601DateString) {
     }
 }
 
-export function getPublishedAtDateString(iso8601DateString) {
-    if(!iso8601DateString) {
-        return "";
-    }
-    const date = new Date(Date.parse(iso8601DateString));
-    return date.toDateString();
-}

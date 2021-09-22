@@ -1,13 +1,13 @@
 import React from "react";
 import {Icon, Menu} from "semantic-ui-react";
-import { Link, withRouter } from "react-router-dom";
 import "./SideBarItem.scss";
+import { Link, withRouter } from "react-router-dom";
 
 export class SideBarItem extends React.Component {
     render() {
         // React will ignore custom boolean attribute, therefore we pass a string
         // we use this attribute in our SCSS for styling
-        const highlight = this.props.highlight ? 'highlight-item' : null;
+        const highlight = this.shouldBeHighlighted() ? 'highlight-item' : null;
         return (
             <Link to={{ pathname: this.props.path }}>
                 <Menu.Item className={['sidebar-item', highlight].join(' ')}>
@@ -19,10 +19,9 @@ export class SideBarItem extends React.Component {
             </Link>
         );
     }
-    shouldBeHighLighted() {
+    shouldBeHighlighted() {
         const {pathname} = this.props.location;
-        console.log(`pathname = `, pathname);
-        if(this.props.path = "/") {
+        if(this.props.path === "/") {
             return pathname === this.props.path;
         }
         return pathname.includes(this.props.path);

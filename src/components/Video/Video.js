@@ -13,8 +13,7 @@ export function Video(props) {
         <div className="video-container">
             <div className="video">
                 <iframe className="video-player" src={embedUrl} frameBorder="0"
-                    allow="autoplay; encrypted-media" allowFullScreen title={"video"} />
-
+                    allow="autoplay; encrypted-media" allowFullScreen title="video" />
             </div>
         </div>
     );
