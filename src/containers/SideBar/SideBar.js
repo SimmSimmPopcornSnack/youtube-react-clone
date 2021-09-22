@@ -1,5 +1,5 @@
 import React from "react";
-import {SideBarItem} from "./SideBarItem/SideBarItem";
+import SideBarItem from "./SideBarItem/SideBarItem";
 import {Menu, Divider} from "semantic-ui-react";
 import "./SideBar.scss";
 import { SideBarHeader } from "./SideBarHeader/SideBarHeader";
